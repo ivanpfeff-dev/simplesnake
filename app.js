@@ -1,10 +1,9 @@
-var expressWebserver = require('express');
-var app = expressWebserver();
+const http = require('http')
+const fs = require('fs')
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'content-type': 'text/html' });
+  fs.createReadStream('index.html').pipe(res);
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
-});
+server.listen(3000);
