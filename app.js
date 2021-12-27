@@ -4,8 +4,13 @@ const fs = require('fs')
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'content-type': 'text/html' });
   fs.createReadStream('index.html').pipe(res);
+    if (req.url === "/dist/main.js")
+    {
+     fs.createReadStream('/dist/main.js').pipe(res); 
+    }
   console.log(
-  `User Connected. HTTP Version: ${req.httpVersion} Method: ${req.method} URL: ${req.url} Remote Host: ${req.socket.remoteAddress}`);
+  `User Connected. HTTP Version: ${req.httpVersion} Method:
+   ${req.method} URL: ${req.url} Remote Host: ${req.socket.remoteAddress}`);
 });
 
 
