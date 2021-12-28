@@ -1,4 +1,3 @@
-module.exports = Game;
 var Snake = require('./snake');
 
 function Game (canvas) {
