@@ -18,6 +18,7 @@ function Game (window, canvas) {
 
     var cycle = function() {
         console.log("Cycle called");
+        self.renderer.clear();
         self.renderer.drawGrid(20, 20);
         window.requestAnimationFrame(cycle);
     };
