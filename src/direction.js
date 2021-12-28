@@ -8,31 +8,31 @@ Direction.LEFT = 3;
 Direction.RIGHT = 4;
 
 Direction.getNextPosition = function(segment) {
-    if(segment.direction === self.UP){
+    if(segment.direction === Direction.UP){
         return new Segment(segment.x, segment.y - 1, segment.direction);
     }
-    if(segment.direction === self.DOWN){
+    if(segment.direction === Direction.DOWN){
         return new Segment(segment.x, segment.y + 1, segment.direction);
     }
-    if(segment.direction === self.LEFT){
+    if(segment.direction === Direction.LEFT){
         return new Segment(segment.x - 1, segment.y, segment.direction);
     }
-    if(segment.direction === self.RIGHT){
+    if(segment.direction === Direction.RIGHT){
         return new Segment(segment.x + 1, segment.y, segment.direction);
     }
 };
 
 Direction.getPreviousPosition = function(segment) {
-    if(segment.direction === self.UP){
+    if(segment.direction === Direction.UP){
         return new Segment(segment.x, segment.y + 1, segment.direction);
     }
-    if(segment.direction === self.DOWN){
+    if(segment.direction === Direction.DOWN){
         return new Segment(segment.x, segment.y - 1, segment.direction);
     }
-    if(segment.direction === self.LEFT){
+    if(segment.direction === Direction.LEFT){
         return new Segment(segment.x + 1, segment.y, segment.direction);
     }
-    if(segment.direction === self.RIGHT){
+    if(segment.direction === Direction.RIGHT){
         return new Segment(segment.x - 1, segment.y, segment.direction);
     }
 }
