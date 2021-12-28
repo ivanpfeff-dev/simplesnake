@@ -8,7 +8,10 @@ const server = http.createServer((req, res) => {
     fs.createReadStream('index.html').pipe(res);
   }
   if (req.url === "/dist/main.js") {
-    fs.createReadStream('/dist/main.js').pipe(res); 
+    fs.createReadStream('./dist/main.js').pipe(res); 
+  }
+  if (req.url === "/dist/jquery.min.js") {
+    fs.createReadStream('./dist/jquery.min.js').pipe(res); 
   }
 });
 

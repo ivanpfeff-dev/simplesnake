@@ -8,7 +8,11 @@ module.exports = {
     //path and filename of the final output
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'main.js'
+        filename: 'main.js',
+		 library: {
+		  name: 'SnakeGame',
+		  type: 'var',
+		},
     },
     
     //default mode is production

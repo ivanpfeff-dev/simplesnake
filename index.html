@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="./dist/jquery.min.js"></script>
         <script src="./dist/main.js"></script>
+        <script>
+            $(document).ready(function () {
+                console.log("Page loaded");
+                var game = new SnakeGame.Game();
+            })
+        </script>
     </head>
     <body>
         Hello World
