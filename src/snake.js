@@ -14,3 +14,5 @@ function Snake(x,y) {
         self.segments.push(Direction.getPreviousPosition(lastSegment));
     }     
 }
+
+module.exports = Snake;

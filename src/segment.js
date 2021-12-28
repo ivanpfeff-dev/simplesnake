@@ -4,3 +4,5 @@ function Segment(x,y,direction) {
     self.y = y;
     self.direction = direction;
 }
+
+module.exports = Segment;

@@ -1,20 +1,17 @@
-//Webpack requires this to work with directories
-const path =  require('path');
+const path = require('path');
+var Game = require('./src/game');
 
-// This is main configuration object that tells Webpackw what to do. 
 module.exports = {
-    //path to entry paint
-    entry: './src/game.js',
-    //path and filename of the final output
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'main.js',
-		 library: {
-		  name: 'SnakeGame',
-		  type: 'var',
-		},
+    entry: {
+        main: path.resolve(__dirname, './src/game.js'),
     },
-    
-    //default mode is production
-    mode: 'development'
-}
+    output: {
+        filename: 'main.js',
+        path: path.resolve(__dirname, 'dist'),
+        library: {
+            name: "SnakeGame",
+            type: "umd"
+        }
+    },
+    mode: "development",
+};

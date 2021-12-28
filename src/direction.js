@@ -36,3 +36,5 @@ Direction.getPreviousPosition = function(segment) {
         return new Segment(segment.x - 1, segment.y, segment.direction);
     }
 }
+
+module.exports = Direction;
