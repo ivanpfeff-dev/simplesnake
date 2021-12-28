@@ -1,5 +1,6 @@
 var Direction = require('./direction');
-var Direction = require('./segment'); 
+var Segment = require('./segment'); 
+
 function Snake(x,y) {
     var self = this;
     self.segments = [];
@@ -11,6 +12,5 @@ function Snake(x,y) {
     self.addSegment = function() {
         var lastSegment = self.getLastSegment();
         self.segments.push(Direction.getPreviousPosition(lastSegment));
-    }
-     
+    }     
 }

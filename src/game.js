@@ -1,4 +1,8 @@
-module.exports.Game = Game;
+module.exports = Game;
+var Snake = require('./snake');
 
-function Game () {
+function Game (canvas) {
+    debugger;
+    var snake1 = new Snake(2, 2);
+    snake1.addSegment();
 }
