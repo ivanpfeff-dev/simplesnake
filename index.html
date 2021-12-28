@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<script src="./style.css"></script>
+        <link href="./style.css" rel="stylesheet">
         <script src="./jquery.min.js"></script>
         <script src="./dist/main.js"></script>
         <script>
             $(document).ready(function () {
                 console.log("Page loaded");
-                var game = new SnakeGame();
 
                 var gameCanvas = document.getElementById("gameCanvas");
                 gameCanvas.width  = window.innerWidth;
                 gameCanvas.height = window.innerHeight;
-                            
-                if(canvas.getContext)
+
+                if(gameCanvas.getContext)
                 {
+                    var game = new SnakeGame(window, gameCanvas);
+                    game.start();
                 }
             })
         </script>
     </head>
     <body>
-        <canvas id = "gameCanvas" width = "800" height = "600"></canvas>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
     </body>
 </html>
