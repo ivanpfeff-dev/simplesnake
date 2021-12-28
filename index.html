@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+		<script src="./style.css"></script>
         <script src="./jquery.min.js"></script>
         <script src="./dist/main.js"></script>
         <script>
@@ -8,20 +9,17 @@
                 console.log("Page loaded");
                 var game = new SnakeGame();
 
-                canvas = document.getElementById("mycanvas");
-                canvas.width = document.body.clientWidth; //document.width is obsolete
-                canvas.height = document.body.clientHeight; //document.height is obsolete
-                
+                var gameCanvas = document.getElementById("gameCanvas");
+                gameCanvas.width  = window.innerWidth;
+                gameCanvas.height = window.innerHeight;
+                            
                 if(canvas.getContext)
                 {
                 }
             })
         </script>
-    <style>
-        #mycanvas{border:5px solid green;}
-    </style>
     </head>
     <body>
-        <canvas id = "mycanvas" width = "100" height = "100"></canvas>
+        <canvas id = "gameCanvas" width = "800" height = "600"></canvas>
     </body>
 </html>
