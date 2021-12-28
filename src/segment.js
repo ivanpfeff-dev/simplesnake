@@ -1,6 +1,6 @@
-function Segment(x,y,orientation) {
+function Segment(x,y,direction) {
     var self = this;
     self.x = x;
     self.y = y;
-    self.orientation = orientation;
+    self.orientation = direction;
 }
