@@ -54,18 +54,21 @@ function Snake(coords, direction) {
         var lastDirection = self.getHead().getDirection();
         for(var i = 0; i < shiftedSegments.length; i++){
             var segment = shiftedSegments[i];
-            var endProcess = segment.getDirection() === Direction.NONE;
+            var currentDirection = segment.getDirection();
+            var endProcess = currentDirection === Direction.NONE;
 
             if(endProcess) {
                 segment.setDirection(lastDirection);
                 break;
             }
 
-            var nextPosition = Direction.getNextPosition(segment.getCoordinates(), segment.getDirection());
+            var nextPosition = Direction.getNextPosition(segment.getCoordinates(), currentDirection);
             segment.setCoordinates(nextPosition);
-            lastDirection = segment.getDirection();
-        }
 
+            segment.setDirection(lastDirection);
+            lastDirection = currentDirection;
+        }
+       
         return shiftedSegments;
     };
 }
