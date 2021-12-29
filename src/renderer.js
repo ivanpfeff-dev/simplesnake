@@ -44,6 +44,9 @@ function Renderer() {
     };
 
     self.drawApple = function(apple) {
+        self.context.beginPath();
+        self.context.arc(apple.x + self.tileLength/2, apple.y + self.tileLength/2, self.tilelength, 0, 2 * Math.PI)
+        self.context.stroke();
         //apple has x, y
     };
 
