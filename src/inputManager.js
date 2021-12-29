@@ -7,7 +7,7 @@ function InputManager(window) {
     this.cycle = function(playerSnake) {
         var direction = keyState.getDirection();
         if(direction){
-          playerSnake.processMovement(direction);
+          playerSnake.turn(direction);
         }
     };
 };

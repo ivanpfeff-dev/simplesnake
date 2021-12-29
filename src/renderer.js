@@ -12,8 +12,11 @@ function Renderer() {
         self.tileLength = canvas.width/30;
     };
 
-    self.drawGrid = function (width, height){
-        for (var i = 0; i < width; i++) {
+    self.drawGrid = function (grid){
+        var gridWidth = grid.getWidth();
+        var gridHeight = grid.getHeight();
+
+        for (var i = 0; i < gridWidth; i++) {
 
             var currentX = i * self.tileLength;
             self.context.moveTo(currentX,0);
@@ -21,7 +24,7 @@ function Renderer() {
             self.context.stroke();
         }
 
-        for (var h = 0; h < height; h++) {
+        for (var h = 0; h < gridHeight; h++) {
             var currentY = h * self.tileLength;
             self.context.moveTo(0,currentY);
             self.context.lineTo(self.canvas.width,currentY);
@@ -30,9 +33,10 @@ function Renderer() {
     };
 
     self.drawSegment = function(segment){
+        var segmentCoordinates = segment.getCoordinates();
         self.context.fillStyle = "black";
         self.context.beginPath();
-        self.context.fillRect(segment.x * self.tileLength, segment.y * self.tileLength, self.tileLength, self.tileLength);
+        self.context.fillRect(segmentCoordinates.x * self.tileLength, segmentCoordinates.y * self.tileLength, self.tileLength, self.tileLength);
         self.context.stroke();
     };
 
@@ -62,7 +66,20 @@ function Renderer() {
 
     self.clear = function() {
         self.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
-    }
+    };
+
+    self.cycle = function(grid, snakes, apples) {
+        self.clear();
+        self.drawGrid(grid);
+
+        for(var i = 0; i < snakes.length; i++){
+            self.drawSnake(snakes[i]);
+        }
+
+        for(var i = 0; i < apples.length; i++){
+            self.drawApple(apples[i]);
+        }
+    };
 }
 
 module.exports = Renderer;

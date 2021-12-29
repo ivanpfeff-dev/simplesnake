@@ -1,7 +1,8 @@
-function Segment(x,y,direction) {
+const Point = require("./point");
+
+function Segment(coords, direction) {
     var self = this;
-    self.x = x;
-    self.y = y;
+    self.coords = coords;
     self.direction = direction;
     
     self.getDirection = function() {
@@ -13,13 +14,16 @@ function Segment(x,y,direction) {
     };
     
     self.getCoordinates = function () {
-        return [x, y];  
+        return self.coords;
     };
     
-    self.setCoordinates = function(x, y) {
-        self.x = x;
-        self.y = y;
-    }
+    self.setCoordinates = function(coords) {
+        self.coords = coords;
+    };
+
+    self.clone = function(){
+        return new Segment(self.coords, self.direction);
+    };
 }
 
 module.exports = Segment;

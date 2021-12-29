@@ -1,10 +1,11 @@
 var Direction = require('./direction');
 var Segment = require('./segment'); 
 
-function Snake(x,y) {
+function Snake(coords, direction) {
     var self = this;
     self.segments = [];
-    self.segments.push(new Segment(x,y,Direction.UP));
+    self.segments.push(new Segment(coords,direction));
+    self.turnLock = false;
 
     self.getSegments = function() {
         return self.segments;
@@ -24,26 +25,36 @@ function Snake(x,y) {
         }
         for(var i = 0; i < length; i++){
             var lastSegment = self.getTail();
-            self.segments.push(Direction.getPreviousPosition(lastSegment));    
+            var previousPosition = Direction.getPreviousPosition(lastSegment.getCoordinates(), lastSegment.getDirection());
+            self.segments.push(new Segment(previousPosition, lastSegment.getDirection()));    
         }
     };    
-    
-    self.processMovement = function(direction) {  
+
+    self.turn = function(direction) {
         var head = self.getHead();
-        var currentDirection = 0;
-        var lastDirection = direction;
-        head.setDirection(direction);
+        if(!self.turnLock && Direction.canTurn(head.getDirection(), direction)){
+            head.setDirection(direction);
+            self.turnLock = true;
+        }
+    };
+    
+    self.processMovement = function() {  
+        var head = self.getHead();
+        var currentDirection = head.getDirection();
+        var lastDirection = head.getDirection();
         
         for(var i = 0; i < self.segments.length; i++) {
             var segment = self.segments[i];
 
-            var nextPosition = Direction.getNextPosition(segment);
-            segment.setCoordinates(nextPosition.x, nextPosition.y);
+            var nextPosition = Direction.getNextPosition(segment.getCoordinates(), segment.getDirection());
+            segment.setCoordinates(nextPosition);
 
             currentDirection = segment.getDirection();
             segment.setDirection(lastDirection);
             lastDirection = currentDirection;
         }
+
+        self.turnLock = false;
     };
 }
 
