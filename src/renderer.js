@@ -3,12 +3,13 @@ function Renderer() {
     self.canvas = null;
     self.context = null;
     self.tileLength = null;
+    self.tileHeight = null;
 
 
     self.setCanvas = function(canvas){
         self.canvas = canvas;
         self.context = canvas.getContext("2d");
-        self.tileLength = canvas.width/30
+        self.tileLength = canvas.width/30;
     };
 
     self.drawGrid = function (width, height){
@@ -30,11 +31,15 @@ function Renderer() {
 
     self.drawSegment = function(segment){
         self.context.beginPath();
-        self.context.fillRect(segment[0] * self.tileLength - self.tileLength, segment[1] * self.tileLength - self.tileLength, self.tileLength, self.tileLength);
+        self.context.fillRect(segment.x * self.tileLength, segment.y * self.tileLength, self.tileLength, self.tileLength);
         self.context.stroke();
     };
 
     self.drawSnake = function(snake){
+        var snakeSegments = snake.getSegments();
+        for (var i = 0; i < snakeSegments.length; i++) {
+            self.drawSegment(snakeSegments[i]);
+        }
 
     };
 

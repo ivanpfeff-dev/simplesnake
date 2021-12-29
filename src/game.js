@@ -1,5 +1,7 @@
 var Snake = require('./snake');
+var Segment = require('./segment');
 var Renderer = require('./renderer');
+const Direction = require('./direction');
 
 function Game (window, canvas) {
     var self = this;
@@ -20,7 +22,9 @@ function Game (window, canvas) {
         console.log("Cycle called");
         self.renderer.clear();
         self.renderer.drawGrid(40, 40);
-        self.renderer.drawSegment([2,3]);
+        var snake1 = new Snake(2,2);
+        snake1.addSegment();
+        self.renderer.drawSnake(snake1);
         window.requestAnimationFrame(cycle);
     };
 

@@ -6,6 +6,9 @@ function Snake(x,y) {
     self.segments = [];
     self.segments.push(new Segment(x,y,Direction.UP));
 
+    self.getSegments = function() {
+        return self.segments;
+    }
     self.getLastSegment = function() {
         return self.segments[self.segments.length-1]
     }
