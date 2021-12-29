@@ -30,7 +30,7 @@ function Renderer() {
 
     self.drawSegment = function(segment){
         self.context.beginPath();
-        self.context.fillRect((segment[0] * self.tileLength) - self.tileLength/2, (segment[1] * self.tileLength) - self.tileLength/2, self.tileLength, self.tileLength);
+        self.context.fillRect(segment[0] * self.tileLength - self.tileLength, segment[1] * self.tileLength - self.tileLength, self.tileLength, self.tileLength);
         self.context.stroke();
     };
 

@@ -20,7 +20,7 @@ function Game (window, canvas) {
         console.log("Cycle called");
         self.renderer.clear();
         self.renderer.drawGrid(40, 40);
-        self.renderer.drawSegment([1, 1]);
+        self.renderer.drawSegment([2,3]);
         window.requestAnimationFrame(cycle);
     };
 
