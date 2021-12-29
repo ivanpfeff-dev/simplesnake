@@ -7,6 +7,7 @@ Direction.UP = 1;
 Direction.DOWN = 2;
 Direction.LEFT = 4;
 Direction.RIGHT = 5;
+Direction.NONE = 8;
 
 Direction.getNextPosition = function(coords, direction) {
     if(direction === Direction.UP){
@@ -20,6 +21,9 @@ Direction.getNextPosition = function(coords, direction) {
     }
     if(direction === Direction.RIGHT){
         return new Point(coords.x + 1, coords.y);
+    }
+    if(direction == Direction.NONE){
+        return coords;
     }
 };
 
@@ -35,6 +39,9 @@ Direction.getPreviousPosition = function(coords, direction) {
     }
     if(direction === Direction.RIGHT){
         return new Point(coords.x - 1, coords.y);
+    }
+    if(direction == Direction.NONE){
+        return coords;
     }
 };
 

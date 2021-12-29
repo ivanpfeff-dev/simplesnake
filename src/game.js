@@ -19,14 +19,15 @@ function Game (window, canvas) {
                 };
       })();
 
-    self.grid = new Grid(20, 20, 900);
+    self.grid = new Grid(20, 20, 0);
     self.renderer = new Renderer();
     self.renderer.setCanvas(canvas);
     self.inputManager = new InputManager(window);
 
     self.playerSnake = new Snake(new Point(0, 10), Direction.RIGHT);
-    self.playerSnake.addSegment(8);
+    self.playerSnake.addSegment(5);
     self.grid.addSnake(self.playerSnake, true);
+    self.grid.addSnake(new Snake(new Point(15, 10), Direction.LEFT), false);
     
     var cycle = function() {
         self.inputManager.cycle(self.playerSnake);

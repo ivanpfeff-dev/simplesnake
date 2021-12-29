@@ -1,14 +1,14 @@
 function CountList() {
     var self = this;
     var set = new Set();
-    var counts = [];
+    var counts = {};
 
     self.push = function(obj) {
         if(!set.has(obj)){
             set.add(obj);
         }
 
-        if(!counts.includes(obj)){
+        if(!(obj in counts)) {
             counts[obj] = 0;
         }
 

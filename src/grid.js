@@ -41,42 +41,44 @@ function Grid (width, height, updateSpeed) {
     };
 
     self.processOneTurn = function () {
-        var allSegments = [];
         var countList = new CountList();
         
-        for(var i = 0; i < self.snakes.length; i++) {
-            allSegments.push(self.snakes[i].getSegments());
+        var snakesWithSegments = [];
+        var allSegments = [];
+
+        for(var i = 0; i < self.snakes.length; i++){
+            snakesWithSegments.push([self.snakes[i], self.snakes[i].moveSegments()]);
+        }
+
+        for(var i = 0; i < snakesWithSegments.length; i++){
+            [snake, segments] = snakesWithSegments[i];
+            allSegments.push(segments);
         }
 
         allSegments = allSegments.flat();
 
-        var clonedSegments = [];
         for(var i = 0; i < allSegments.length; i++){
-            clonedSegments.push(allSegments[i].clone());
+            countList.push(allSegments[i].getCoordinates().getHash());
         }
 
-        for(var i = 0; i < clonedSegments.length; i++){
-            var segment = clonedSegments[i];
-            var nextPos = Direction.getNextPosition(segment.getCoordinates(), segment.getDirection());
-            countList.push(nextPos.getHash());
-        }
-
-        for(var i = 0; i < self.snakes.length; i++){
-            var snake = self.snakes[i];
-            var head = snake.getHead();
+        for(var i = 0; i < snakesWithSegments.length; i++){
+            [snake, segments] = snakesWithSegments[i];
+            var head = segments[0];
             var headCoords = head.getCoordinates();
-            if(!headCoords || !headCoords.getHash){
-                debugger;
-            }
+
             if(countList.getCount(headCoords.getHash()) > 1 ||
                 (headCoords.x < 0 || headCoords.x > self.width || headCoords.y < 0 || headCoords.y > self.height)) 
             {
-                console.log("Collision!!!");
+                var snakeIdx = self.snakes.indexOf(snake);
+                if(snakeIdx !== -1){
+                    self.snakes.splice(snakeIdx, 1);
+                }
             }
         }
 
-        for(var i = 0; i < self.snakes.length; i++){
-            self.snakes[i].processMovement();
+        for(var i = 0; i < snakesWithSegments.length; i++){
+            [snake, segments] = snakesWithSegments[i];
+            snake.setSegments(segments);
         };
     };
 

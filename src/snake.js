@@ -5,11 +5,17 @@ function Snake(coords, direction) {
     var self = this;
     self.segments = [];
     self.segments.push(new Segment(coords,direction));
+    self.segments.push(new Segment(coords,Direction.NONE));
     self.turnLock = false;
 
     self.getSegments = function() {
         return self.segments;
     };
+    
+    self.setSegments = function(segments) {
+        self.turnLock = false;
+        self.segments = segments;
+    }
     
     self.getHead = function () {
         return self.segments[0];  
@@ -25,7 +31,7 @@ function Snake(coords, direction) {
         }
         for(var i = 0; i < length; i++){
             var lastSegment = self.getTail();
-            var previousPosition = Direction.getPreviousPosition(lastSegment.getCoordinates(), lastSegment.getDirection());
+            var previousPosition = Direction.getPreviousPosition(lastSegment.getCoordinates(), Direction.NONE);
             self.segments.push(new Segment(previousPosition, lastSegment.getDirection()));    
         }
     };    
@@ -38,23 +44,29 @@ function Snake(coords, direction) {
         }
     };
     
-    self.processMovement = function() {  
-        var head = self.getHead();
-        var currentDirection = head.getDirection();
-        var lastDirection = head.getDirection();
-        
-        for(var i = 0; i < self.segments.length; i++) {
-            var segment = self.segments[i];
+    self.moveSegments = function() {  
+        var shiftedSegments = [];
+
+        for(var i = 0; i < self.segments.length; i++){
+            shiftedSegments.push(self.segments[i].clone());
+        }
+
+        var lastDirection = self.getHead().getDirection();
+        for(var i = 0; i < shiftedSegments.length; i++){
+            var segment = shiftedSegments[i];
+            var endProcess = segment.getDirection() === Direction.NONE;
+
+            if(endProcess) {
+                segment.setDirection(lastDirection);
+                break;
+            }
 
             var nextPosition = Direction.getNextPosition(segment.getCoordinates(), segment.getDirection());
             segment.setCoordinates(nextPosition);
-
-            currentDirection = segment.getDirection();
-            segment.setDirection(lastDirection);
-            lastDirection = currentDirection;
+            lastDirection = segment.getDirection();
         }
 
-        self.turnLock = false;
+        return shiftedSegments;
     };
 }
 
