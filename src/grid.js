@@ -1,5 +1,7 @@
+const Apple = require("./apple");
 const CountList = require("./countList");
 const Direction = require("./direction");
+const Point = require("./point");
 
 function Grid (width, height, updateSpeed) {
     var self = this;
@@ -37,6 +39,37 @@ function Grid (width, height, updateSpeed) {
     };
 
     self.addApple = function(apple) {
+        self.apples.push(apple);
+    };
+
+    self.generateApple = function () {
+        var countList = new CountList();
+
+        for(var i = 0; i < self.apples.length; i++){
+            countList.push(self.apples[i].getCoordinates().getHash());
+        }
+
+        for(var i = 0; i < self.snakes.length; i++){
+            var segments = self.snakes[i].getSegments();
+            for(var j = 0; j < segments.length; j++){
+                countList.push(segments[i].getCoordinates().getHash());
+            }
+        }
+
+        var availablePoints = [];
+        for(var i = 0; i < self.width; i++){
+            for(var j = 0; j < self.height; j++) {
+                var testPoint = new Point(i, j);
+                if(countList.getCount(testPoint.getHash()) === 0){
+                    availablePoints.push(testPoint);
+                }
+            }
+        }
+
+        var selectedPoint = Math.floor((Math.random() * availablePoints.length) + 1);
+        var appleCoordinates = availablePoints[selectedPoint];
+
+        var apple = new Apple(appleCoordinates);
         self.apples.push(apple);
     };
 
@@ -80,6 +113,28 @@ function Grid (width, height, updateSpeed) {
             [snake, segments] = snakesWithSegments[i];
             snake.setSegments(segments);
         };
+
+        var appleHash = {};
+        for(var i = 0; i < self.apples.length; i++){
+            var apple = self.apples[i];
+            var appleCoords = apple.getCoordinates();
+            appleHash[appleCoords.getHash()] = apple;
+        }
+
+        for(var i = 0; i < self.snakes.length; i++){
+            var snake = self.snakes[i];
+            var snakeHead = snake.getHead();
+            var headCoords = snakeHead.getCoordinates();
+            var headHash = headCoords.getHash();
+            if(headHash in appleHash) {
+                var apple = appleHash[headHash];
+                var appleIdx = self.apples.indexOf(apple);
+                if(appleIdx !== -1){
+                    self.apples.splice(appleIdx, 1);
+                }
+                snake.addSegment(3);
+            }
+        }
     };
 
     self.cycle = function() {

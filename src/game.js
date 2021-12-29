@@ -28,6 +28,11 @@ function Game (window, canvas) {
     self.playerSnake.addSegment(5);
     self.grid.addSnake(self.playerSnake, true);
     self.grid.addSnake(new Snake(new Point(15, 10), Direction.LEFT), false);
+    self.grid.generateApple();
+    self.grid.generateApple();
+    self.grid.generateApple();
+    self.grid.generateApple();
+    self.grid.generateApple();
     
     var cycle = function() {
         self.inputManager.cycle(self.playerSnake);

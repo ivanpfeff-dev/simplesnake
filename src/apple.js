@@ -1,7 +1,10 @@
-function Apple(x,y) {
+function Apple(coords) {
     var self = this;
-    self.x = x;
-    self.y = y;
+    self.coords = coords;
+
+    self.getCoordinates = function () {
+        return self.coords;
+    }
 }
 
 module.exports = Apple;

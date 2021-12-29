@@ -29,10 +29,11 @@ function Snake(coords, direction) {
         if(!length) {
             length = 1;
         }
-        for(var i = 0; i < length; i++){
-            var lastSegment = self.getTail();
-            var previousPosition = Direction.getPreviousPosition(lastSegment.getCoordinates(), Direction.NONE);
-            self.segments.push(new Segment(previousPosition, lastSegment.getDirection()));    
+
+        var lastSegment = self.getTail();
+        var lastCoords = lastSegment.getCoordinates();
+        for(var i = 0; i < length; i++) {
+            self.segments.push(new Segment(lastCoords, Direction.NONE));    
         }
     };    
 
