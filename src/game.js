@@ -23,7 +23,7 @@ function Game (window, canvas) {
 
     self.playerSnake = new Snake(1, 1);
     self.playerSnake.addSegment(20);
-    self.apple = new Apple(1, 1);
+    self.apple = new Apple(5, 5);
 
     var cycle = function() {
         self.inputManager.cycle(self.playerSnake);
