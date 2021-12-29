@@ -34,15 +34,38 @@ function Renderer() {
 
     self.drawSegment = function(segment){
         var segmentCoordinates = segment.getCoordinates();
-        self.context.fillStyle = "black";
+        self.context.fillStyle = "green";
         self.context.beginPath();
         self.context.fillRect(segmentCoordinates.x * self.tileLength, segmentCoordinates.y * self.tileLength, self.tileLength, self.tileLength);
         self.context.stroke();
     };
 
+    self.drawSnakeHead = function(segment) {
+        var segmentCoordinates = segment.getCoordinates();
+
+        self.context.fillStyle = "green";
+        self.context.beginPath();
+        self.context.fillRect(segmentCoordinates.x * self.tileLength, segmentCoordinates.y * self.tileLength, self.tileLength, self.tileLength);
+
+        self.context.fillStyle = "black";
+
+        self.context.beginPath();
+        self.context.arc(segmentCoordinates.x * self.tileLength + self.tileLength/4, segmentCoordinates.y * self.tileLength + self.tileLength/4, self.tileLength * 0.1, 0, 2 * Math.PI);
+        self.context.fill();
+
+        self.context.beginPath();
+        self.context.arc(segmentCoordinates.x * self.tileLength + self.tileLength/(4/3), segmentCoordinates.y * self.tileLength + self.tileLength/4, self.tileLength * 0.1, 0, 2 * Math.PI);
+        self.context.fill(); 
+
+        self.context.beginPath();
+        self.context.arc(segmentCoordinates.x * self.tileLength + self.tileLength/2, segmentCoordinates.y * self.tileLength + self.tileLength/2, self.tileLength * 0.35, Math.PI, 2 * Math.PI, 1);
+        self.context.stroke();
+    }
+
     self.drawSnake = function(snake){
         var snakeSegments = snake.getSegments();
-        for (var i = 0; i < snakeSegments.length; i++) {
+        self.drawSnakeHead(snakeSegments[0]);
+        for (var i = 1; i < snakeSegments.length; i++) {
             self.drawSegment(snakeSegments[i]);
         }
 
