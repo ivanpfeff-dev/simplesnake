@@ -19,7 +19,7 @@ function Game (window, canvas) {
                 };
       })();
 
-    self.grid = new Grid(20, 20, 900);
+    self.grid = new Grid(30, 30, 900);
     self.renderer = new Renderer();
     self.renderer.setCanvas(canvas);
     self.inputManager = new InputManager(window);
@@ -36,7 +36,7 @@ function Game (window, canvas) {
     
     var cycle = function() {
         self.inputManager.cycle(self.playerSnake);
-        self.renderer.cycle(self.grid, self.grid.getSnakes(), self.grid.getApples());
+        self.renderer.cycle(self.grid, self.grid.getSnakes(), self.grid.getApples(), self.playerSnake);
         self.grid.cycle();
 
         window.requestAnimationFrame(cycle);

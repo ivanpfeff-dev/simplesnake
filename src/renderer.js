@@ -1,3 +1,6 @@
+const { sendfile } = require("express/lib/response");
+const Segment = require("./segment");
+
 function Renderer() {
     var self = this;
     self.canvas = null;
@@ -32,8 +35,64 @@ function Renderer() {
         }
     };
 
+    self.calcDistance = function(point1, point2) {
+        var dx = Math.abs(point1.x - point2.x); 
+        var dy = Math.abs(point1.y - point2.y);
+        return [dx, dy];
+    };
+
+
+    self.drawPlayerGrid = function(grid, snakes, apples, playerSnake){
+        var playerGridCenterX = self.canvas.width/2;
+        var playerGridCenterY = self.canvas.width/2;
+
+        var playerGridLength = 11;
+        var playerGridHeight = 11;
+
+        var playerTileLength = self.canvas.width/playerGridLength;
+
+        var playerSnakeSegments = playerSnake.getSegments();
+        var playerSnakeHead = playerSnake.getHead();
+        
+        for (var i = 0; i < playerGridHeight; i++) {
+
+            var currentX = i * playerTileLength;
+            self.context.moveTo(currentX,0);
+            self.context.lineTo(currentX, self.canvas.height);
+            self.context.stroke();
+        }
+
+        for (var h = 0; h < playerGridHeight; h++) {
+            var currentY = h * playerTileLength;
+            self.context.moveTo(0,currentY);
+            self.context.lineTo(self.canvas.width,currentY);
+            self.context.stroke();
+        }
+        var allSnakeSegments = [];
+        for (var i = 0; i < snakes.length; i++) {
+            var tempSegments = snakes[i].getSegments();
+            for (var h  = 0; h < tempSegments.length; h++) {
+                allSnakeSegments.push(tempSegments[h]);
+            }
+        };
+
+        for (var i = 0; i < allSnakeSegments.length; i++) {
+            var tempSegment = allSnakeSegments[i];
+            [dx, dy] = self.calcDistance(playerSnakeHead.getCoordinates(), tempSegment.getCoordinates());
+            console.log(`Segment at ${tempSegment.getCoordinates().x},${tempSegment.getCoordinates().y}.`);
+            console.log(`dx: ${dx}, dy: ${dy}`); 
+        }
+
+
+
+
+
+         
+    };
+
     self.drawSegment = function(segment){
         var segmentCoordinates = segment.getCoordinates();
+
         self.context.fillStyle = "green";
         self.context.beginPath();
         self.context.fillRect(segmentCoordinates.x * self.tileLength, segmentCoordinates.y * self.tileLength, self.tileLength, self.tileLength);
@@ -60,7 +119,7 @@ function Renderer() {
         self.context.beginPath();
         self.context.arc(segmentCoordinates.x * self.tileLength + self.tileLength/2, segmentCoordinates.y * self.tileLength + self.tileLength/2, self.tileLength * 0.35, Math.PI, 2 * Math.PI, 1);
         self.context.stroke();
-    }
+    };
 
     self.drawSnake = function(snake){
         var snakeSegments = snake.getSegments();
@@ -90,8 +149,11 @@ function Renderer() {
         self.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
     };
 
-    self.cycle = function(grid, snakes, apples) {
+    
+
+    self.cycle = function(grid, snakes, apples, playerSnake) {
         self.clear();
+        self.drawPlayerGrid(grid, snakes, apples, playerSnake);
         self.drawGrid(grid);
 
         for(var i = 0; i < snakes.length; i++){
