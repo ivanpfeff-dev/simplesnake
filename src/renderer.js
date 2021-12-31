@@ -48,9 +48,9 @@ function Renderer() {
     };
 
     self.drawPlayerGrid = function(grid, snakes, apples, playerSnake){
-        var playerGridLength = 10;
-        var playerGridHeight = 10;
-        var playerTileLength = self.canvas.width/playerGridLength;
+        var playerGridLength = 32; //must be this or else it wont render properly
+        var playerGridHeight = 16; 
+        var playerTileLength = ((self.canvas.width + self.canvas.height)/2)/((playerGridLength + playerGridHeight)/2); //i believe this works
 
         var playerSnakeHead = playerSnake.getHead();
 
@@ -73,19 +73,23 @@ function Renderer() {
         self.context.stroke();
         self.context.fill(); //center is gridheight/2, gridlength/2*/
 
-        var upperThresholdX = playerGridLength/2 - playerSnakeHead.getCoordinates().x; // - 0
-        var upperThresholdY = playerGridHeight/2 - playerSnakeHead.getCoordinates().y; // - 0
+        var upperThresholdX = playerGridLength/2 - (playerSnakeHead.getCoordinates().x);
+        var upperThresholdY = playerGridHeight/2 - (playerSnakeHead.getCoordinates().y);
+        var lowerThresholdX = playerGridLength/2 + -(grid.getWidth() - playerSnakeHead.getCoordinates().x);
+        var lowerThresholdY = playerGridHeight/2 + -(grid.getHeight() - playerSnakeHead.getCoordinates().y);
+        console.log(playerSnakeHead.getCoordinates().x);
 
         self.context.fillStyle = "black";
-        self.context.beginPath();
-        self.context.fillRect(0,0,upperThresholdX * playerTileLength, self.canvas.height);
-        self.context.fill();
 
-        self.context.beginPath();
-        self.context.fillRect(0,0, self.canvas.width, upperThresholdY * playerTileLength);
-        self.context.fill();      
+        self.context.fillRect(0,0,upperThresholdX * playerTileLength, self.canvas.height);
+
+        self.context.fillRect(0,0, self.canvas.width, upperThresholdY * playerTileLength);     
         
-        for (var i = 0; i < playerGridHeight; i++) {        //drawing grid
+        self.context.fillRect(self.canvas.width - (lowerThresholdX * playerTileLength - playerTileLength), 0, lowerThresholdX * playerTileLength, self.canvas.height);
+
+        self.context.fillRect(0, self.canvas.height - (lowerThresholdY * playerTileLength - playerTileLength), self.canvas.width, lowerThresholdY * playerTileLength);
+        
+        for (var i = 0; i < playerGridLength; i++) {        //drawing grid
 
             var currentX = i * playerTileLength;
             self.context.moveTo(currentX,0);
@@ -109,7 +113,7 @@ function Renderer() {
 
         for (var i = 0; i < allSnakeSegments.length; i++) {
             var tempSegment = allSnakeSegments[i];
-            [dx, dy] = self.calcDistance(playerSnakeHead.getCoordinates(), tempSegment.getCoordinates()); //calculating distance between segment and player head
+            [dx, dy] = self.calcDistance(playerSnakeHead.getCoordinates(), tempSegment.getCoordinates());
 
             if (Math.abs(dx) < playerGridLength && Math.abs(dy) < playerGridHeight) {
                 var renderCoordinates = new Point(camera.x - dx, camera.y - dy);
