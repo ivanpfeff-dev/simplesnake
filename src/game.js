@@ -19,7 +19,7 @@ function Game (window, canvas) {
                 };
       })();
 
-    self.grid = new Grid(40, 60, 900);
+    self.grid = new Grid(20, 20, 900);
     self.renderer = new Renderer();
     self.renderer.setCanvas(canvas);
     self.inputManager = new InputManager(window);

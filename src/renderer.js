@@ -55,13 +55,14 @@ function Renderer() {
         var playerSnakeHead = playerSnake.getHead();
 
         var camera = new Point(playerGridLength/2, playerGridHeight/2);
+        self.drawTile(camera, playerTileLength, "black");
 
         //var cameraSnakeDifferenceX = (camera.x - playerSnakeHead.getCoordinates().x);
         //var cameraSnakeDifferenceY = (camera.y - playerSnakeHead.getCoordinates().y);
         //console.log(`Actual x: ${playerSnake.getHead().getCoordinates().x}, y: ${playerSnake.getHead().getCoordinates().y}`)
         //console.log(`differenceX: ${cameraSnakeDifferenceX}, differenceY: ${cameraSnakeDifferenceY}`);
 
-        self.context.fillStyle = "black";
+        /*self.context.fillStyle = "black";
         self.context.beginPath();
         self.context.fillRect(playerGridLength/2 * playerTileLength , playerGridHeight/2 * playerTileLength, playerTileLength, playerTileLength);
         self.context.moveTo(camera.x * playerGridLength - playerGridLength, camera.y * playerGridLength - playerGridLength,);
@@ -70,12 +71,21 @@ function Renderer() {
         self.context.moveTo(camera.x * playerGridLength - playerGridLength, camera.y * playerGridLength + playerGridLength);
         self.context.lineTo(camera.x * playerGridLength - playerGridLength, camera.y * playerGridLength - playerGridLength);
         self.context.stroke();
-        self.context.fill(); //center is gridheight/2, gridlength/2
+        self.context.fill(); //center is gridheight/2, gridlength/2*/
 
+        var upperThresholdX = playerGridLength/2 - playerSnakeHead.getCoordinates().x; // - 0
+        var upperThresholdY = playerGridHeight/2 - playerSnakeHead.getCoordinates().y; // - 0
 
+        self.context.fillStyle = "black";
+        self.context.beginPath();
+        self.context.fillRect(0,0,upperThresholdX * playerTileLength, self.canvas.height);
+        self.context.fill();
 
+        self.context.beginPath();
+        self.context.fillRect(0,0, self.canvas.width, upperThresholdY * playerTileLength);
+        self.context.fill();      
         
-        for (var i = 0; i < playerGridHeight; i++) {
+        for (var i = 0; i < playerGridHeight; i++) {        //drawing grid
 
             var currentX = i * playerTileLength;
             self.context.moveTo(currentX,0);
@@ -97,21 +107,17 @@ function Renderer() {
             }
         };
 
-        var renderableSegments = [];
         for (var i = 0; i < allSnakeSegments.length; i++) {
             var tempSegment = allSnakeSegments[i];
-            [dx, dy] = self.calcDistance(playerSnakeHead.getCoordinates(), tempSegment.getCoordinates());
+            [dx, dy] = self.calcDistance(playerSnakeHead.getCoordinates(), tempSegment.getCoordinates()); //calculating distance between segment and player head
 
             if (Math.abs(dx) < playerGridLength && Math.abs(dy) < playerGridHeight) {
                 var renderCoordinates = new Point(camera.x - dx, camera.y - dy);
-                //renderableSegments.push(tempSegment);
                 self.drawSegment(tempSegment, renderCoordinates, playerTileLength);
-                    //console.log(`Renderable Segment at ${tempSegment.getCoordinates().x},${tempSegment.getCoordinates().y}.`);
-                    //console.log(`dx: ${dx}, dy: ${dy}`); 
+
             }
         }
 
-        var renderableApples = [];
         for (var i = 0; i < apples.length; i++) {
             var tempApple = apples[i];
             [dx, dy] = self.calcDistance(playerSnakeHead.getCoordinates(), tempApple.getCoordinates())
@@ -126,6 +132,14 @@ function Renderer() {
         //self.drawSnakeHead(playerSnakeApparentHead, playerTileLength);
         //console.log(`head: ${playerSnakeHead.getCoordinates().x}, ${playerSnakeHead.getCoordinates().y}`);
     };
+
+    self.drawTile = function(localCoordinates, tileLength, color) {
+        self.context.fillStyle = color;
+
+        self.context.beginPath();
+        self.context.fillRect(localCoordinates.x * tileLength, localCoordinates.y * tileLength, tileLength, tileLength);
+        self.context.stroke();
+    }
 
     self.drawSegment = function(segment, localCoordinates, tileLength){
         var segmentCoordinates = segment.getCoordinates();
