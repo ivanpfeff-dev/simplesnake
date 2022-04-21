@@ -7,6 +7,15 @@ function Snake(coords, direction) {
     self.segments.push(new Segment(coords,direction));
     self.segments.push(new Segment(coords,Direction.NONE));
     self.turnLock = false;
+    self.moveTime = Date.now(); //each individual snake has a starting time
+
+    self.getMoveTime = function() {
+        return self.moveTime;
+    }
+
+    self.updateMoveTime = function() {
+        self.moveTime = Date.now();
+    }
 
     self.getSegments = function() {
         return self.segments;

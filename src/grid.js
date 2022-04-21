@@ -14,6 +14,10 @@ function Grid (width, height, updateSpeed) {
     self.playerSnake = null;
     self.lastGridUpdate = Date.now();
 
+    self.getUpdateSpeed = function() {
+        return self.updateSpeed;
+    }
+
     self.getWidth = function() {
         return self.width;
     };
@@ -81,7 +85,10 @@ function Grid (width, height, updateSpeed) {
 
         for(var i = 0; i < self.snakes.length; i++){
             snakesWithSegments.push([self.snakes[i], self.snakes[i].moveSegments()]);
+            self.snakes[i].updateMoveTime();
+            //console.log(self.snakes[i].getMoveTime());
         }
+
 
         for(var i = 0; i < snakesWithSegments.length; i++){
             [snake, segments] = snakesWithSegments[i];
