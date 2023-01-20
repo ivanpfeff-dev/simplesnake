@@ -19,7 +19,7 @@ function Game (window, canvas) {
                 };
       })();
 
-    self.grid = new Grid(50, 50, 200);
+    self.grid = new Grid(50, 50, 850);
     self.renderer = new Renderer();
     self.renderer.setCanvas(canvas);
     self.inputManager = new InputManager(window);
@@ -29,9 +29,9 @@ function Game (window, canvas) {
     self.grid.addSnake(self.playerSnake, true);
     //self.grid.addSnake(new Snake(new Point(30, 10), Direction.LEFT), false);
     
-    //for (var i = 0; i < 50; i++) {
-    //    self.grid.generateApple();
-    //}
+    for (var i = 0; i < 50; i++) {
+        self.grid.generateApple();
+    }
     
     var cycle = function() {
         self.inputManager.cycle(self.playerSnake);

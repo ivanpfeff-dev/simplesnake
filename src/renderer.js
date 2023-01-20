@@ -28,12 +28,14 @@ function Renderer() {
         var playerSnakeHead = playerSnake.getHead();
         var playerTileLength = self.canvas.width/playerGridLength;
 
-        var moveTime = playerSnake.getMoveTime();
-        var timePassed = (Date.now() - moveTime) / grid.getUpdateSpeed();
-        console.log(timePassed);
+        /*var snakeTime = playerSnake.getMoveTime();
+        var timePassed = (Date.now() - grid.getLastUpdate()) / grid.getUpdateSpeed();
+            if (timePassed > 1) {
+                timePassed = 1;
+            }*/
+        var timePassed = 0;
+        //console.log('elated time: %f', timePassed);
 
-        var testPoint = new Point(5, 5)
-        self.drawTileSmooth(playerSnake, timePassed, testPoint, playerTileLength, "pink");
 
         self.drawLattice(playerTileLength);
         self.drawBorders(playerSnake, timePassed, playerTileLength, playerGridLength, playerGridHeight, grid.getWidth(), grid.getHeight(), playerSnakeHead.getCoordinates());
@@ -99,16 +101,25 @@ function Renderer() {
         var xRemainder = self.canvas.width%tileLength;
         var yRemainder = self.canvas.height%tileLength;
 
-        if (playerSnake.getHead().getDirection() == Direction.RIGHT) {
-            self.context.beginPath();
+        self.context.beginPath();
+
+        if (playerSnake.getHead().getDirection() == Direction.RIGHT) {    
             self.context.fillRect((localCoordinates.x - timePassed) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
-            self.context.stroke();
+        }
+        else if (playerSnake.getHead().getDirection() == Direction.LEFT) {
+            self.context.fillRect((localCoordinates.x + timePassed) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
+
+        }
+        else if (playerSnake.getHead().getDirection() == Direction.UP) {
+            self.context.fillRect((localCoordinates.x) * tileLength + xRemainder/2, (localCoordinates.y + timePassed) * tileLength + yRemainder/2, tileLength, tileLength);
         }
         else {
-            self.context.beginPath();
-            self.context.fillRect((localCoordinates.x) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
-            self.context.stroke();
+            self.context.fillRect((localCoordinates.x) * tileLength + xRemainder/2, (localCoordinates.y - timePassed) * tileLength + yRemainder/2, tileLength, tileLength);
         }
+        self.context.stroke();
+    }
+    self.drawSegmentStatic = function(segment, localCoodinates, tileLength) {
+
     }
 
     self.drawSegment = function(timePassed, segment, localCoordinates, tileLength){
@@ -116,27 +127,37 @@ function Renderer() {
         var yRemainder = self.canvas.height%tileLength;
         
         self.context.fillStyle = "green";
+        self.context.beginPath();
 
-        if (segment.getDirection() == Direction.RIGHT) {
-            self.context.beginPath();
-            self.context.fillRect((localCoordinates.x + timePassed) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
-            self.context.stroke();
+        self.context.fillRect((localCoordinates.x) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
+
+        /*if (segment.getDirection() == Direction.RIGHT) {
+            self.context.fillRect((localCoordinates.x) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
         }
         if (segment.getDirection() == Direction.LEFT) {
-            self.context.beginPath();
-            self.context.fillRect((localCoordinates.x + timePassed) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
-            self.context.stroke();
+            self.context.fillRect((localCoordinates.x) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
         }
         if (segment.getDirection() == Direction.UP) {
-            self.context.beginPath();
-            self.context.fillRect(localCoordinates.x * tileLength + xRemainder/2, (localCoordinates.y + timePassed) * tileLength + yRemainder/2, tileLength, tileLength);
-            self.context.stroke();
+            self.context.fillRect(localCoordinates.x * tileLength + xRemainder/2, (localCoordinates.y) * tileLength + yRemainder/2, tileLength, tileLength);
         }
         if (segment.getDirection() == Direction.DOWN) {
-            self.context.beginPath();
-            self.context.fillRect(localCoordinates.x * tileLength + xRemainder/2, (localCoordinates.y - timePassed) * tileLength + yRemainder/2, tileLength, tileLength);
-            self.context.stroke();
+            self.context.fillRect(localCoordinates.x * tileLength + xRemainder/2, (localCoordinates.y) * tileLength + yRemainder/2, tileLength, tileLength);
+        }*/
+        self.context.stroke();
+
+        /*if (segment.getDirection() == Direction.RIGHT) {
+            self.context.fillRect((localCoordinates.x + timePassed) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
         }
+        if (segment.getDirection() == Direction.LEFT) {
+            self.context.fillRect((localCoordinates.x + timePassed) * tileLength + xRemainder/2, localCoordinates.y * tileLength + yRemainder/2, tileLength, tileLength);
+        }
+        if (segment.getDirection() == Direction.UP) {
+            self.context.fillRect(localCoordinates.x * tileLength + xRemainder/2, (localCoordinates.y + timePassed) * tileLength + yRemainder/2, tileLength, tileLength);
+        }
+        if (segment.getDirection() == Direction.DOWN) {
+            self.context.fillRect(localCoordinates.x * tileLength + xRemainder/2, (localCoordinates.y - timePassed) * tileLength + yRemainder/2, tileLength, tileLength);
+        }
+        self.context.stroke();*/
 
 
     };
@@ -150,45 +171,67 @@ function Renderer() {
 
     self.drawBorders = function(playerSnake, timePassed, tileLength, playerLength, playerHeight, gridLength, gridHeight, headCoords) {
 
+        var xRemainder = (self.canvas.width % tileLength) / 2;
+        var yRemainder = (self.canvas.height % tileLength) / 2;
+
+        self.context.fillStyle = "black";
+        self.context.beginPath();
+
         var northBorder = playerHeight/2 - headCoords.y;
+
         if (northBorder >= 0) {
-            for (var i = -1; i < playerLength + 1; i++) {
-                for (var h = -1; h < northBorder; h++) {
-                    var tempPoint = new Point(i, h);
-                    self.drawTileSmooth(playerSnake, timePassed, tempPoint, tileLength, "black");
-                }
+            if (playerSnake.getHead().getDirection() == Direction.UP) {
+                self.context.fillRect(0, 0, self.canvas.width, ((northBorder) * tileLength) + (tileLength * timePassed) + yRemainder);
+            }
+            else if (playerSnake.getHead().getDirection() == Direction.DOWN) {
+                self.context.fillRect(0, 0, self.canvas.width, ((northBorder) * tileLength) - (tileLength * timePassed) + yRemainder);
+            }
+            else {
+                self.context.fillRect(0, 0, self.canvas.width, northBorder * tileLength + yRemainder);
             }
         }
+        
+        var southBorder = playerHeight/2 - (gridHeight - headCoords.y) - 1;
 
-        var southBorder = playerHeight/2 - (gridHeight - headCoords.y);
         if (southBorder >= 0) {
-            for (var i = -1; i < playerLength; i++) {
-                for (var h = 0; h < southBorder; h++) {
-                    var tempPoint = new Point(i, playerHeight - h);
-                    self.drawTileSmooth(playerSnake, timePassed, tempPoint, tileLength, "black");
-                }
+            if (playerSnake.getHead().getDirection() == Direction.DOWN) {
+                self.context.fillRect(0, self.canvas.height - ((southBorder) * tileLength) - (tileLength * timePassed) - yRemainder, self.canvas.width, self.canvas.height);
+            }
+            else if (playerSnake.getHead().getDirection() == Direction.UP) {
+                self.context.fillRect(0, self.canvas.height - ((southBorder) * tileLength) + (tileLength * timePassed) - yRemainder, self.canvas.width, self.canvas.height);
+            }
+            else {
+                self.context.fillRect(0, self.canvas.height - ((southBorder) * tileLength) - yRemainder, self.canvas.width, self.canvas.height);
             }
         }
 
         var westBorder = playerLength/2 - headCoords.x;
         if (westBorder >= 0) {
-            for (var i = 0; i < westBorder; i++) {
-                for (var h = -1; h < playerHeight + 1; h++) {
-                    var tempPoint = new Point(i, h);
-                    self.drawTileSmooth(playerSnake, timePassed, tempPoint, tileLength, "black");
-                }
+            if (playerSnake.getHead().getDirection() == Direction.RIGHT) {
+                self.context.fillRect(0, 0, ((westBorder) * tileLength) - (tileLength * timePassed) + xRemainder, self.canvas.height)
+            }
+            else if (playerSnake.getHead().getDirection() == Direction.LEFT) {
+                self.context.fillRect(0, 0, ((westBorder) * tileLength) + (tileLength * timePassed) + xRemainder, self.canvas.height)
+            }
+            else {
+                self.context.fillRect(0, 0, (westBorder * tileLength) + xRemainder, self.canvas.height)
             }
         }
 
-        var eastBorder = playerLength/2 - (gridLength - headCoords.x);
+        var eastBorder = playerLength/2 - (gridLength - headCoords.x) - 1;
         if (eastBorder >= 0) {
-            for (var i = 0; i < eastBorder; i++) {
-                for (var h = -1; h < playerHeight + 1; h++) {
-                    var tempPoint = new Point(playerLength - i, h);
-                    self.drawTileSmooth(playerSnake, timePassed, tempPoint, tileLength, "black");
-                }
+            if (playerSnake.getHead().getDirection() == Direction.LEFT) {
+                self.context.fillRect(self.canvas.width - ((eastBorder) * tileLength) + (tileLength * timePassed) - xRemainder, 0, self.canvas.width, self.canvas.height);
+            }
+            else if (playerSnake.getHead().getDirection() == Direction.RIGHT) {
+                self.context.fillRect(self.canvas.width - ((eastBorder) * tileLength) - (tileLength * timePassed) - xRemainder, 0, self.canvas.width, self.canvas.height);
+            }
+            else {
+                self.context.fillRect(self.canvas.width - ((eastBorder) * tileLength) - xRemainder, 0, self.canvas.width, self.canvas.height);
             }
         }
+
+        self.context.stroke();
     }
 
     self.drawLattice = function(playerTileLength) {
@@ -214,7 +257,7 @@ function Renderer() {
     }
 
 
-    self.drawSnakeHead = function(localCoordinates, tileLength) {
+    /*self.drawSnakeHead = function(localCoordinates, tileLength) {
         var xRemainder = self.canvas.width%tileLength;
         var yRemainder = self.canvas.height%tileLength;
 
@@ -235,16 +278,16 @@ function Renderer() {
         self.context.beginPath();
         self.context.arc(localCoordinates.x * tileLength + xRemainder/2 - tileLength/2, localCoordinates.y * tileLength + yRemainder/2 - tileLength/2, tileLength * 0.35, Math.PI, 2 * Math.PI, 1);
         self.context.stroke();
-    };
+    };*/
 
-    self.drawSnake = function(snake){
+    /*self.drawSnake = function(snake){
         var snakeSegments = snake.getSegments();
         self.drawSnakeHead(snakeSegments[0]);
         for (var i = 1; i < snakeSegments.length; i++) {
             self.drawSegment(snakeSegments[i]);
         }
 
-    };
+    };*/
 
     self.drawApple = function(apple, localCoordinates, tileLength) {
         var coords = apple.getCoordinates();

@@ -17,6 +17,10 @@ function Grid (width, height, updateSpeed) {
     self.getUpdateSpeed = function() {
         return self.updateSpeed;
     }
+    
+    self.getLastUpdate = function() {
+        return self.lastGridUpdate;
+    }
 
     self.getWidth = function() {
         return self.width;
