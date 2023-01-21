@@ -8,6 +8,15 @@ function Snake(coords, direction) {
     self.segments.push(new Segment(coords,Direction.NONE));
     self.turnLock = false;
     self.moveTime = Date.now(); //each individual snake has a starting time
+    self.score = 0;
+
+    self.getScore = function() {
+        return self.score;
+    }
+
+    self.addScore = function(score) {
+        self.score += score;
+    }
 
     self.getMoveTime = function() {
         return self.moveTime;
@@ -81,6 +90,9 @@ function Snake(coords, direction) {
        
         return shiftedSegments;
     };
+    self.die = function() {
+        self = null;
+    }
 }
 
 module.exports = Snake;

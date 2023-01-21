@@ -10,7 +10,7 @@ function Grid (width, height, updateSpeed) {
     self.apples = [];
     self.width = width;
     self.height = height;
-    self.updateSpeed = 1000 - updateSpeed;
+    self.updateSpeed = updateSpeed;
     self.playerSnake = null;
     self.lastGridUpdate = Date.now();
 
@@ -144,6 +144,7 @@ function Grid (width, height, updateSpeed) {
                     self.apples.splice(appleIdx, 1);
                 }
                 snake.addSegment(3);
+                snake.addScore(1);
             }
         }
     };
