@@ -10,7 +10,7 @@ function Grid (width, height, updateSpeed) {
     self.apples = [];
     self.width = width;
     self.height = height;
-    self.updateSpeed = updateSpeed;
+    self.updateSpeed = 1000 - updateSpeed;
     self.playerSnake = null;
     self.lastGridUpdate = Date.now();
 
